@@ -4,24 +4,26 @@
 	
 	angular.module('atlasSpaceApp')
 		/**
-		 * @ngdoc function
-		 * @name atlasSpaceApp.value:config
+		 * @ngdoc service
+		 * @name atlasSpaceApp:config
+		 * @kind function
 		 * @description
 		 * # config
 		 * config of the atlasSpaceApp
 		 */
 		.value('config', getConfig())
 		/**
-		 * @ngdoc function
-		 * @name atlasSpaceApp.value:space
+		 * @ngdoc service
+		 * @name atlasSpaceApp:space
+		 * @kind function
 		 * @description
 		 * # space
 		 * space of the atlasSpaceApp
 		 */
 		.factory('space', space)
 		/**
-		 * @ngdoc function
-		 * @name atlasSpaceApp.factory:logger
+		 * @ngdoc service
+		 * @name atlasSpaceApp:logger
 		 * @description
 		 * # logger
 		 * logger of the atlasSpaceApp
@@ -69,11 +71,25 @@
         return service;
         /////////////////////
 
+		/**
+		 * @ngdoc service
+		 * @name logger.error
+		 * @description
+		 * # error
+		 * error(message, data, title).
+		 */
         function error(message, data, title) {
             //toastr.error(message, title);
             $log.error('Error: ' + message, data);
         }
 
+		/**
+		 * @ngdoc service
+		 * @name logger.info
+		 * @description
+		 * # info
+		 * info(message, data, title).
+		 */
         function info(message, data, title) {
             //toastr.info(message, title);
             $log.info('Info: ' + message, data);

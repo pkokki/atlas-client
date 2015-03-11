@@ -8,7 +8,9 @@
 // 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
-
+  // grunt plugin for angularjs documentation
+  grunt.loadNpmTasks('grunt-ngdocs');
+  
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
 
@@ -61,6 +63,17 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
+    },
+	
+	// ngdocs options
+	ngdocs: {
+      options: {
+		title: "My Awesome Docs",
+        scripts: ['angular.js'],
+        html5Mode: true,
+		startPage: 'atlasSpaceApp',
+      },
+      all: ['app/**/*.js']
     },
 
     // The actual grunt server settings
@@ -416,6 +429,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
+	'ngdocs',
     'wiredep',
     'useminPrepare',
     'concurrent:dist',
