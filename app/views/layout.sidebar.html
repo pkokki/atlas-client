@@ -1,0 +1,22 @@
+<div class="sidebar-filter"
+     ng-class="{ 'sidebar-filter--is-shown': vm.sidebarIsOpened }"
+     ng-click="vm.closeSidebar()"></div>
+
+<div class="sidebar" ng-class="{ 'sidebar--is-opened': vm.sidebarIsOpened }">
+
+    <div class="sidebar-user">
+        <img src="images/avatar.jpg" class="sidebar-user__avatar">
+        <a class="sidebar-user__email">lorem.ipsum@google.com</a>
+    </div>
+	
+	<div class="sidebar-menu" data-ng-controller="SidebarCtrl as vm">
+		<ul>
+			<li data-ng-class="vm.isCurrent(r)" data-ng-repeat="r in vm.navRoutes">
+				<a class="sidebar-link" href="#{{::r.url}}" ng-click="">
+					<i class="sidebar-link__icon {{::r.icon}}"></i>
+					<span class="sidebar-link__label" data-ng-bind="::r.title"></span>
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>

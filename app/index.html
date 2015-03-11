@@ -1,0 +1,90 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	<link rel="shortcut icon" type="image/ico" href="favicon.ico">
+    <!-- build:css(.) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/mdi/css/materialdesignicons.css" />
+    <link rel="stylesheet" href="bower_components/mdi/css/materialdesignicons.min.css" />
+    <link rel="stylesheet" href="bower_components/lumx/dist/lumx.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+	<link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="atlasSpaceApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div data-ng-controller="ShellCtrl as vm">
+		<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
+			<div class="page-splash">
+				<div class="page-splash-message">
+					{{::vm.splashMessage}}
+				</div>
+			</div>
+		</div>
+
+		<header class="clearfix">
+			<div data-ng-include="::vm.topnavView"></div>
+		</header>
+		<section id="content" class="content">
+			<div data-ng-include="::vm.sidebarView"></div>
+
+			<div class="container shuffle-animation">
+				<div ng-view=""></div>
+			</div>
+
+			<div ngplus-overlay
+				 ngplus-overlay-delay-in="50"
+				 ngplus-overlay-delay-out="700"
+				 ngplus-overlay-animation="dissolve-animation">
+				<img src="images/busy.gif"/>
+
+				<div class="page-spinner-message overlay-message">{{::vm.busyMessage}}</div>
+			</div>
+		</section>
+	</div>
+
+    
+
+    <div class="footer">
+      <div class="container">
+        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+      </div>
+    </div>
+
+
+    <!-- build:js(.) scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.js"></script>
+    <script src="bower_components/velocity/velocity.js"></script>
+    <script src="bower_components/velocity/velocity.ui.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/lumx/dist/lumx.js"></script>
+    <script src="bower_components/extras.angular.plus/ngplus-overlay.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/controllers/main.js"></script>
+        <script src="scripts/controllers/about.js"></script>
+        <!-- endbuild -->
+</body>
+</html>
