@@ -13,29 +13,32 @@ angular
     'ngAnimate',
     'ngCookies',
     'ngResource',
-    'ngRoute',
+    'ui.router',
     'ngSanitize',
     'ngTouch',
 	'lumx',
 	'ngplus'
   ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
+  .config(function ($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise('/');
+	
+	
+    $stateProvider
+      .state('space', {
+		url: '/',
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
-      .when('/:area/:section', {
+      .state('area', {
+		url: '/:area/:section',
 		templateUrl: function(parameters){
-			return 'views/' + parameters.area + '/' + parameters.section + '.html';
+			var section = parameters.section;
+			if (!section) {
+				section = 'home';
+			}
+			return 'views/' + parameters.area + '/' + section + '.html';
 		},
-        //templateUrl: 'views/about.html',
-        controller: function($routeParams, logger){
-			logger.info($routeParams.area + 'Ctrl');
-			return $routeParams.area + 'Ctrl';
-		}
+        controller: 'SpaceAreaCtrl as vm'
       })
-      .otherwise({
-        redirectTo: '/'
-      });
+	  ;
   });

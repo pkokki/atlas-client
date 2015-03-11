@@ -9,7 +9,7 @@
 		 * # error
 		 * error(message, data, title).
 		 */
-        function error(message, data, title) {
+        function error(message, data/*, title*/) {
             //toastr.error(message, title);
             $log.error('Error: ' + message, data);
         }
@@ -21,17 +21,17 @@
 		 * # info
 		 * info(message, data, title).
 		 */
-        function info(message, data, title) {
+        function info(message, data/*, title*/) {
             //toastr.info(message, title);
             $log.info('Info: ' + message, data);
         }
 
-        function success(message, data, title) {
+        function success(message, data/*, title*/) {
             //toastr.success(message, title);
             $log.info('Success: ' + message, data);
         }
 
-        function warning(message, data, title) {
+        function warning(message, data/*, title*/) {
             //toastr.warning(message, title);
             $log.warn('Warning: ' + message, data);
         }
@@ -100,7 +100,7 @@
 			vm.navRoutes = space.getNavRoutes(); 
 		}
 		
-		function isCurrent(route) {
+		function isCurrent(/*route*/) {
         /*    if (!route || !route.title || !$route.current || !$route.current.title) {
                 return '';
             }
@@ -158,6 +158,12 @@
 		activate();
 	}
 	
+	function SpaceAreaCtrl() {
+		var vm = this;
+		vm.name = 'CONFIG';
+		vm.section = 'HOME';
+	}
+	
 	angular.module('atlasSpaceApp')
 		/**
 		 * @ngdoc service
@@ -209,5 +215,13 @@
 		 * Controller of the atlasSpaceApp
 		 */
 		.controller('MainCtrl', MainCtrl)
+		/**
+		 * @ngdoc function
+		 * @name atlasSpaceApp.controller:SpaceAreaCtrl
+		 * @description
+		 * # SpaceAreaCtrl
+		 * Controller of the atlasSpaceApp
+		 */
+		.controller('SpaceAreaCtrl', SpaceAreaCtrl)
 		;
 })();
