@@ -1,6 +1,162 @@
 (function() {
 	'use strict';
+ 
+	function logger($log/*, toastr*/) {
+		/**
+		 * @ngdoc service
+		 * @name logger.error
+		 * @description
+		 * # error
+		 * error(message, data, title).
+		 */
+        function error(message, data, title) {
+            //toastr.error(message, title);
+            $log.error('Error: ' + message, data);
+        }
 
+		/**
+		 * @ngdoc service
+		 * @name logger.info
+		 * @description
+		 * # info
+		 * info(message, data, title).
+		 */
+        function info(message, data, title) {
+            //toastr.info(message, title);
+            $log.info('Info: ' + message, data);
+        }
+
+        function success(message, data, title) {
+            //toastr.success(message, title);
+            $log.info('Success: ' + message, data);
+        }
+
+        function warning(message, data, title) {
+            //toastr.warning(message, title);
+            $log.warn('Warning: ' + message, data);
+        }
+		
+		/////////////////////
+		var service = {
+            //showToasts: true,
+
+            error   : error,
+            info    : info,
+            success : success,
+            warning : warning,
+
+            // straight to console; bypass toastr
+            log     : $log.log
+        };
+        return service;
+    }
+	
+	function space() {
+		function getNavRoutes() {
+			return [
+				{ url: '/', title: 'Home', icon: 'mdi mdi-home'},
+				{ url: '/config/home', title: 'Space configurator', icon: 'mdi mdi-settings'},
+				{ url: '', title: '', icon: ''},
+			];
+		}
+		
+		/////////////////////
+		var service = {
+			getNavRoutes: getNavRoutes
+		};
+		return service;
+	}
+	
+	function getConfig() {
+        return {
+			app: {
+				title: 'atlas space',
+				version: '0.1.0',
+				errorPrefix: '[Atlas Error] ', //Configure the exceptionHandler decorator
+			},
+			splash: {
+				message: 'The system is loading...', 
+			},
+			busy: {
+				message: 'Please wait...',
+			},
+			views: {
+				topnavView: 'views/layout.topnav.html',
+				sidebarView: 'views/layout.sidebar.html',
+			},
+		};
+    }
+	
+	function MainCtrl($scope) {
+		$scope.awesomeThings = [
+		  'HTML5 Boilerplate',
+		  'AngularJS',
+		  'Karma'
+		];
+	}
+	
+	function SidebarCtrl(space) {
+		function activate() { 
+			vm.navRoutes = space.getNavRoutes(); 
+		}
+		
+		function isCurrent(route) {
+        /*    if (!route || !route.title || !$route.current || !$route.current.title) {
+                return '';
+            }
+            var menuName = route.title;
+            return $route.current.title.substr(0, menuName.length) === menuName ? 'current' : '';
+		*/
+			return '';
+        }
+		
+		var vm = this;
+        vm.isCurrent = isCurrent;
+		activate();
+	}
+	
+	function ShellCtrl($timeout, config, logger) {
+		function activate() {
+			closeSidebar();
+			hideSplash();
+			logger.success(config.app.title + ' loaded!', null);
+        }
+
+		function hideSplash() {
+			if (vm.showSplash) {
+				//Force a 1 second delay so we can see the splash.
+				$timeout(function() {
+					vm.showSplash = false;
+				}, 1000);
+			}
+        }
+
+		function toggleSidebar() {
+			vm.sidebarIsOpened = !vm.sidebarIsOpened;
+		}
+
+		function closeSidebar() {
+			vm.sidebarIsOpened = false;
+		}
+		
+		var vm = this;
+
+		vm.title = config.app.title;
+		vm.version = config.app.version;
+
+        vm.isBusy = config.busy !== null;
+        vm.busyMessage = config.busy.message;
+
+		vm.showSplash = config.splash !== null;
+		vm.splashMessage = config.splash.message; // 'The system is loading...';
+
+		vm.toggleSidebar = toggleSidebar;
+		vm.closeSidebar = closeSidebar;
+		vm.topnavView = config.views.topnavView;
+		vm.sidebarView = config.views.sidebarView;
+		
+		activate();
+	}
 	
 	angular.module('atlasSpaceApp')
 		/**
@@ -54,164 +210,4 @@
 		 */
 		.controller('MainCtrl', MainCtrl)
 		;
-	 
-	function logger($log/*, toastr*/) {
-        var service = {
-            //showToasts: true,
-
-            error   : error,
-            info    : info,
-            success : success,
-            warning : warning,
-
-            // straight to console; bypass toastr
-            log     : $log.log
-        };
-
-        return service;
-        /////////////////////
-
-		/**
-		 * @ngdoc service
-		 * @name logger.error
-		 * @description
-		 * # error
-		 * error(message, data, title).
-		 */
-        function error(message, data, title) {
-            //toastr.error(message, title);
-            $log.error('Error: ' + message, data);
-        }
-
-		/**
-		 * @ngdoc service
-		 * @name logger.info
-		 * @description
-		 * # info
-		 * info(message, data, title).
-		 */
-        function info(message, data, title) {
-            //toastr.info(message, title);
-            $log.info('Info: ' + message, data);
-        }
-
-        function success(message, data, title) {
-            //toastr.success(message, title);
-            $log.info('Success: ' + message, data);
-        }
-
-        function warning(message, data, title) {
-            //toastr.warning(message, title);
-            $log.warn('Warning: ' + message, data);
-        }
-    }
-	
-	function space() {
-		var service = {
-			getNavRoutes: getNavRoutes
-		};
-		return service;
-        /////////////////////
-		
-		function getNavRoutes() {
-			return [
-				{ url: '/', title: 'Home', icon: 'mdi mdi-home'},
-				{ url: '/about', title: 'Space configurator', icon: 'mdi mdi-settings'},
-				{ url: '', title: '', icon: ''},
-			];
-		}
-		
-	}
-	
-	function getConfig() {
-        return {
-			app: {
-				title: 'atlas space',
-				version: '0.1.0',
-				errorPrefix: '[Atlas Error] ', //Configure the exceptionHandler decorator
-			},
-			splash: {
-				message: 'The system is loading...', 
-			},
-			busy: {
-				message: 'Please wait...',
-			},
-			views: {
-				topnavView: 'views/layout.topnav.html',
-				sidebarView: 'views/layout.sidebar.html',
-			},
-		};
-    }
-	
-	function MainCtrl($scope) {
-		$scope.awesomeThings = [
-		  'HTML5 Boilerplate',
-		  'AngularJS',
-		  'Karma'
-		];
-	}
-	
-	function SidebarCtrl(space) {
-		var vm = this;
-        vm.isCurrent = isCurrent;
-		
-		activate();
-
-        function activate() { 
-			vm.navRoutes = space.getNavRoutes(); 
-		}
-		
-		function isCurrent(route) {
-        /*    if (!route || !route.title || !$route.current || !$route.current.title) {
-                return '';
-            }
-            var menuName = route.title;
-            return $route.current.title.substr(0, menuName.length) === menuName ? 'current' : '';
-		*/
-			return '';
-        }
-	}
-	
-	function ShellCtrl($timeout, config, logger) {
-		var vm = this;
-
-		vm.title = config.app.title;
-		vm.version = config.app.version;
-
-        vm.isBusy = config.busy != null;
-        vm.busyMessage = config.busy.message;
-
-		vm.showSplash = config.splash != null;
-		vm.splashMessage = config.splash.message; // 'The system is loading...';
-
-		vm.toggleSidebar = toggleSidebar;
-		vm.closeSidebar = closeSidebar;
-		vm.topnavView = config.views.topnavView;
-		vm.sidebarView = config.views.sidebarView;
-		
-		activate();
-
-        function activate() {
-			closeSidebar();
-			hideSplash();
-			logger.success(config.app.title + ' loaded!', null);
-        }
-
-		function hideSplash() {
-			if (vm.showSplash) {
-				//Force a 1 second delay so we can see the splash.
-				$timeout(function() {
-					vm.showSplash = false;
-				}, 1000);
-			}
-        }
-
-		function toggleSidebar() {
-			vm.sidebarIsOpened = !vm.sidebarIsOpened;
-		}
-
-		function closeSidebar() {
-			vm.sidebarIsOpened = false;
-		}
-	}
 })();

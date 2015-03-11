@@ -68,7 +68,7 @@ module.exports = function (grunt) {
 	// ngdocs options
 	ngdocs: {
       options: {
-		title: "My Awesome Docs",
+		title: 'My Awesome Docs',
         scripts: ['angular.js'],
         html5Mode: true,
 		startPage: 'atlasSpaceApp',
