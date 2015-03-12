@@ -152,9 +152,20 @@
 
 		vm.toggleSidebar = toggleSidebar;
 		vm.closeSidebar = closeSidebar;
-		vm.topnavView = config.views.topnavView;
-		vm.sidebarView = config.views.sidebarView;
+		vm.topnavView = ''; //config.views.topnavView;
+		vm.sidebarView = ''; //config.views.sidebarView;
 		
+		vm.menu = {
+			sections: [
+				{ name: 'Home', type: 'link', url: '#/' },
+				{ name: 'Config', type: 'heading' },
+				{ name: 'Dashboard', type: 'link', url: '#/config/home' },
+				{ name: 'APIs', type: 'toggle', children: [
+					{ name: 'Proxies', type: 'link', url: '#/config/home' },
+					{ name: 'Environments', type: 'link', url: '#/config/home' },
+				]}
+			],
+		};
 		activate();
 	}
 	

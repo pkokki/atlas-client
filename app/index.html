@@ -19,47 +19,131 @@
 	<link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="atlasSpaceApp" layout="column">
-    <!--[if lt IE 7]>
-      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <div data-ng-controller="ShellCtrl as vm">
-		<div id="splash-page" data-ng-show="vm.showSplash" class="dissolve-animation">
-			<div class="page-splash">
-				<div class="page-splash-message">
-					{{::vm.splashMessage}}
+  <body ng-app="atlasSpaceApp" ng-controller="ShellCtrl as vm" layout="row">
+	<!-- Source: https://material.angularjs.org -->
+			
+	<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+		  md-component-id="left"
+		  md-is-locked-open="$mdMedia('gt-sm')">
+
+		<md-toolbar>
+		  <h1 class="md-toolbar-tools">
+			<a ng-href="/" layout="row" flex>
+			  <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve" style="
+				  width: 40px; height: 40px;">
+				<path d="M 50 0 L 100 14 L 92 80 L 50 100 L 8 80 L 0 14 Z" fill="#b2b2b2"></path>
+				<path d="M 50 5 L 6 18 L 13.5 77 L 50 94 Z" fill="#E42939"></path>
+				<path d="M 50 5 L 94 18 L 86.5 77 L 50 94 Z" fill="#B72833"></path>
+				<path1 d="M 50 7 L 83 75 L 72 75 L 65 59 L 50 59 L 50 50 L 61 50 L 50 26 Z" fill="#b2b2b2"></path1>
+				<path1 d="M 50 7 L 17 75 L 28 75 L 35 59 L 50 59 L 50 50 L 39 50 L 50 26 Z" fill="#fff"></path1>
+			  </svg>
+			  <div class="docs-logotype">{{::vm.title}}</div>
+			</a>
+		  </h1>
+		</md-toolbar>
+
+		<ul class="skip-links">
+		  <li class="md-whiteframe-z2">
+			<md-button ng-click="focusMainContent($event)" href="#">Skip to content</md-button>
+		  </li>
+		</ul>
+
+		<md-content flex role="navigation">
+		  <ul class="docs-menu">
+			<li ng-repeat="section in vm.menu.sections" class="parent-list-item" ng-class="{'parentActive' : isSectionSelected(section)}">
+				<!-- ngIf: section.type === 'heading' -->
+				<h2 class="menu-heading" ng-if="section.type === 'heading'" id="heading_{{ section.name || nospace }}">
+					{{section.name}}
+				</h2>
+				<!-- ngIf: section.type === 'link' -->				
+				<div ng-if="section.type === 'link'">
+					<md-button ng-class="{'active' : isSelected()}" ng-click="focusSection()" ng-href="{{section.url}}">{{section.name}}</md-button>
 				</div>
-			</div>
-		</div>
+				<!-- ngIf: section.type === 'toggle' -->
+				<div ng-if="section.type === 'toggle'" class="md-button-toggle">
+					<md-button ng-if="section.type === 'toggle'" ng-click="toggle()" flex layout="row" class="">
+						{{section.name}}
+						<span class="md-toggle-icon ng-scope toggled" ng-class="{'toggled' : isOpen()}"></span>
+					</md-button>
+				</div>
+				<!-- ngIf: section.children -->
+				<ul ng-if="section.children" ng-show="!isOpen()" class="menu-toggle-list">
+					<li ng-repeat="child in section.children" ng-class="{'childActive' : isSectionSelected(child)}">
+						<md-button ng-class="{'active' : isSelected()}" ng-click="focusSection()" ng-href="{{child.url}}">{{child.name}}</md-button>
+					</li>
+				</ul>
+			</li>
+		  </ul>
+		</md-content>
+	</md-sidenav>
+		
+	<div layout="column" tabIndex="-1" role="main" flex>
+		<md-toolbar>
+			<div class="md-toolbar-tools">
+				<md-button ng-click="vm.toggleSidebar()">
+				  <md-icon class="svg-ic_menu_24px"></md-icon>
+				</md-button>
 
-		<header class="clearfix">
-			<div data-ng-include="::vm.topnavView"></div>
-		</header>
-		<section id="content" class="content">
-			<div data-ng-include="::vm.sidebarView"></div>
+				<div layout="row" flex class="fill-height">
+				  <div class="md-toolbar-item md-breadcrumb">
+					<span ng-if="menu.currentPage.name !== menu.currentSection.name">
+					  <span hide-sm hide-md>{{menu.currentSection.name}}</span>
+					  <span class="docs-menu-separator-icon" style="" hide-sm hide-md>
+						<img src="img/docArrow.png" alt="" aria-hidden="true">
+					  </span>
+					</span>
+					<span class="md-breadcrumb-page" flt="| humanizeDoc">{{(menu.currentPage ) || "currentPage" }}</span>
+				  </div>
 
-			<div class="container shuffle-animation">
-				<div ui-view></div>
-			</div>
+				  <span flex></span> <!-- use up the empty space -->
+				  <div class="md-toolbar-item md-tools docs-tools" layout="column" layout-gt-md="row">
+					<div>
+					  <md-button ng-if1111="!menu.currentPage || menu.currentSection.name === 'Getting Started'"
+								 target="_blank"
+								 ng-href="{{BUILDCONFIG.repository}}/commit/{{BUILDCONFIG.commit}}" >
+						  {{BUILDCONFIG.version}}  -  SHA {{BUILDCONFIG.commit.substring(0,7)}}
+					  </md-button>
+					</div>
+					<div ng-repeat="doc in currentComponent.docs">
+					  <md-button ng-href="#{{doc.url}}"
+						ng-class="{hide: path().indexOf('demo') == -1}"
+						aria-label="{{ doc }}" flt ="| humanizeDoc | directiveBrackets">
+						{{doc }}
+					  </md-button>
+					</div>
+					<md-button ng-class="{hide: !currentDoc || !currentDoc.hasDemo}"
+					  ng-href="#/demo/{{currentComponent.name}}"
+					  style="position: relative; padding-left: 30px; margin-right: 15px;">
+					  <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="
+						  height: 36px;
+						  position: absolute;
+						  left: 0px;
+						  top: -3px;
+						  margin-top: 0;"></md-icon>
+					  <span>View Demo</span>
+					</md-button>
 
-			<div ngplus-overlay
-				 ngplus-overlay-delay-in="50"
-				 ngplus-overlay-delay-out="700"
-				 ngplus-overlay-animation="dissolve-animation">
-				<img src="images/busy.gif"/>
-
-				<div class="page-spinner-message overlay-message">{{::vm.busyMessage}}</div>
-			</div>
-		</section>
+					<md-button ng-class="{hide: !currentDoc}"
+					  ng-href="{{currentDoc.githubUrl}}"
+					  hide-sm hide-md
+					  style="position: relative; padding-left: 30px; margin-right: 15px;">
+					  <md-icon md-svg-src="img/icons/ic_launch_24px.svg" style="
+						  height: 36px;
+						  position: absolute;
+						  left: 0px;
+						  top: -3px;
+						  margin-top: 0;"></md-icon>
+					  <span>View on Github</span>
+					</md-button>
+				  </div>
+				</div>
+			  </div>
+		</md-toolbar>
+	
+	
+		<md-content ui-view md-scroll-y flex class="md-padding"></md-content>
 	</div>
-
-    
-
-    <div class="footer">
-      <div class="container">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-      </div>
-    </div>
+		
 
 
     <!-- build:js(.) scripts/vendor.js -->
