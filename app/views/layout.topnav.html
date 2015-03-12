@@ -1,42 +1,62 @@
-<header class="header bgc-indigo-50 z-depth1">
-	<div class="toolbar">
-		<div class="toolbar__left mr+++">
-            <button class="btn btn--l btn--black btn--icon" lx-ripple ng-click="vm.toggleSidebar()">
-                <i class="mdi mdi-menu"></i>
-            </button>
-        </div>
-		
-		<div class="toolbar__label">
-			<span class="fs-title">{{::vm.title}}</span>
-			<span class="fs-caption">{{::vm.version}}</span>
-		</div>
-		
-		<div class="toolbar__right">
-		
-			<lx-search-filter closed theme="light"></lx-search-filter>
-			
-			<lx-dropdown position="right" from-top>
-				<button class="btn btn--l btn--black btn--icon" lx-ripple lx-dropdown-toggle>
-                    <i class="mdi mdi-dots-vertical"></i>
-                </button>
-				
-				<lx-dropdown-menu>
-                    <ul>
-						<li><a class="dropdown-link">Exit</a></li>
-						<li>
-							<a class="dropdown-link" href="http://www.johnpapa.net/hottowel-angular" target="_blank">
-								Created by John Papa
-							</a>
-						</li>
-						<li>
-							<a class="dropdown-link" href="http://www.angularjs.org" target="_blank">
-								<img src="images/AngularJS-small.png" />
-							</a>
-						</li>
-					</ul>
-                </lx-dropdown-menu>
-			</lx-dropdown>
-        </div>
+<md-toolbar>
+	<!-- Source: https://material.angularjs.org -->
+	<div class="md-toolbar-tools">
+        <md-button ng-click="vm.toggleSidebar()">
+          <md-icon class="svg-ic_menu_24px"></md-icon>
+        </md-button>
 
-	</div>
-</header>
+        <div layout="row" flex class="fill-height">
+          <div class="md-toolbar-item md-breadcrumb">
+            <span ng-if="menu.currentPage.name !== menu.currentSection.name">
+              <span hide-sm hide-md>{{menu.currentSection.name}}</span>
+              <span class="docs-menu-separator-icon" style="" hide-sm hide-md>
+                <img src="img/docArrow.png" alt="" aria-hidden="true">
+              </span>
+            </span>
+            <span class="md-breadcrumb-page" flt="| humanizeDoc">{{(menu.currentPage ) || vm.title }}</span>
+          </div>
+
+          <span flex></span> <!-- use up the empty space -->
+          <div class="md-toolbar-item md-tools docs-tools" layout="column" layout-gt-md="row">
+            <div>
+              <md-button ng-if1111="!menu.currentPage || menu.currentSection.name === 'Getting Started'"
+                         target="_blank"
+                         ng-href="{{BUILDCONFIG.repository}}/commit/{{BUILDCONFIG.commit}}" >
+                  {{BUILDCONFIG.version}}  -  SHA {{BUILDCONFIG.commit.substring(0,7)}}
+              </md-button>
+            </div>
+            <div ng-repeat="doc in currentComponent.docs">
+              <md-button ng-href="#{{doc.url}}"
+                ng-class="{hide: path().indexOf('demo') == -1}"
+                aria-label="{{ doc }}" flt ="| humanizeDoc | directiveBrackets">
+                {{doc }}
+              </md-button>
+            </div>
+            <md-button ng-class="{hide: !currentDoc || !currentDoc.hasDemo}"
+              ng-href="#/demo/{{currentComponent.name}}"
+              style="position: relative; padding-left: 30px; margin-right: 15px;">
+              <md-icon md-svg-src="img/icons/ic_play_arrow_24px.svg" style="
+                  height: 36px;
+                  position: absolute;
+                  left: 0px;
+                  top: -3px;
+                  margin-top: 0;"></md-icon>
+              <span>View Demo</span>
+            </md-button>
+
+            <md-button ng-class="{hide: !currentDoc}"
+              ng-href="{{currentDoc.githubUrl}}"
+              hide-sm hide-md
+              style="position: relative; padding-left: 30px; margin-right: 15px;">
+              <md-icon md-svg-src="img/icons/ic_launch_24px.svg" style="
+                  height: 36px;
+                  position: absolute;
+                  left: 0px;
+                  top: -3px;
+                  margin-top: 0;"></md-icon>
+              <span>View on Github</span>
+            </md-button>
+          </div>
+        </div>
+      </div>
+</md-toolbar>

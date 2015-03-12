@@ -16,7 +16,7 @@ angular
     'ui.router',
     'ngSanitize',
     'ngTouch',
-	'lumx',
+	'ngMaterial',
 	'ngplus'
   ])
   .config(function ($stateProvider, $urlRouterProvider) {

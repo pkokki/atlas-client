@@ -62,6 +62,11 @@
 		
 		/////////////////////
 		var service = {
+			title: 'atlas space',
+			version: '0.1.0',
+			splash: {
+				message: 'The system is loading...', 
+			},
 			getNavRoutes: getNavRoutes
 		};
 		return service;
@@ -70,12 +75,7 @@
 	function getConfig() {
         return {
 			app: {
-				title: 'atlas space',
-				version: '0.1.0',
 				errorPrefix: '[Atlas Error] ', //Configure the exceptionHandler decorator
-			},
-			splash: {
-				message: 'The system is loading...', 
 			},
 			busy: {
 				message: 'Please wait...',
@@ -115,7 +115,7 @@
 		activate();
 	}
 	
-	function ShellCtrl($timeout, config, logger) {
+	function ShellCtrl($timeout, config, logger, space) {
 		function activate() {
 			closeSidebar();
 			hideSplash();
@@ -141,14 +141,14 @@
 		
 		var vm = this;
 
-		vm.title = config.app.title;
-		vm.version = config.app.version;
+		vm.title = space.title;
+		vm.version = space.version;
 
         vm.isBusy = config.busy !== null;
         vm.busyMessage = config.busy.message;
 
-		vm.showSplash = config.splash !== null;
-		vm.splashMessage = config.splash.message; // 'The system is loading...';
+		vm.showSplash = space.splash !== null;
+		vm.splashMessage = space.splash.message; // 'The system is loading...';
 
 		vm.toggleSidebar = toggleSidebar;
 		vm.closeSidebar = closeSidebar;
@@ -158,10 +158,10 @@
 		activate();
 	}
 	
-	function SpaceAreaCtrl() {
+	function SpaceAreaCtrl($state) {
 		var vm = this;
-		vm.name = 'CONFIG';
-		vm.section = 'HOME';
+		vm.name = $state.params.area;
+		vm.section = $state.params.section;
 	}
 	
 	angular.module('atlasSpaceApp')
