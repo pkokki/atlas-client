@@ -32,11 +32,10 @@ angular
       .state('area', {
 		url: '/:area/:section',
 		templateUrl: function(parameters){
-			var section = parameters.section;
-			if (!section) {
-				section = 'home';
+			if (!parameters.section) {
+				parameters.section = 'home';
 			}
-			return 'views/' + parameters.area + '/' + section + '.html';
+			return 'views/' + parameters.area + '/' + parameters.section + '.html';
 		},
         controller: 'SpaceAreaCtrl as vm'
       })

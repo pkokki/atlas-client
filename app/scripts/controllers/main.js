@@ -159,10 +159,10 @@
 			sections: [
 				{ name: 'Home', type: 'link', url: '#/' },
 				{ name: 'Config', type: 'heading' },
-				{ name: 'Dashboard', type: 'link', url: '#/config/home' },
+				{ name: 'Dashboard', type: 'link', url: '#/config/' },
 				{ name: 'APIs', type: 'toggle', children: [
-					{ name: 'Proxies', type: 'link', url: '#/config/home' },
-					{ name: 'Environments', type: 'link', url: '#/config/home' },
+					{ name: 'Proxies', type: 'link', url: '#/config/proxies' },
+					{ name: 'Environments', type: 'link', url: '#/config/envs' },
 				]}
 			],
 		};
